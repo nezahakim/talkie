@@ -1,0 +1,24 @@
+modules = ["nodejs-20"]
+[nix]
+channel = "stable-24_05"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[[ports]]
+localPort = 3001
+externalPort = 3001
+
+[[ports]]
+localPort = 3010
+externalPort = 3000
+
+[[ports]]
+localPort = 5173
+externalPort = 5173
+exposeLocalhost = true
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
