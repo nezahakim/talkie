@@ -5,7 +5,7 @@ import Live from "./pages/Live";
 import Profile from "./pages/Profile";
 
 function App() {
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState("explore");
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">

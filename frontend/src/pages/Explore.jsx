@@ -29,6 +29,8 @@ import Suggestions from "./Home/Suggestions";
 import StartRoom from "./Home/StartRoom";
 import Footer from "./Home/Footer";
 import ActiveRooms from "../components/ActiveRooms";
+import TrendingCommunities from "../components/TrendingCommunities";
+import UpcomingEvents from "../components/UpcomingEvents";
 
 function Explore() {
     return (
@@ -39,9 +41,11 @@ function Explore() {
                         <StartRoom />
                         <ActiveRooms />
                         <RecommendationCards />
+                        <TrendingCommunities />
                     </div>
                     <div className="lg:col-span-1">
                         <Suggestions />
+                        <UpcomingEvents />
                     </div>
                 </div>
             </main>
