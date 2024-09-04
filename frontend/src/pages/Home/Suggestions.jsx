@@ -40,7 +40,7 @@ function Suggestions() {
     ];
 
     return (
-        <aside className="bg-white rounded-lg shadow p-6 lg:w-80">
+        <aside className="bg-white rounded-lg shadow p-6 ">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
                 Who to follow
             </h2>
