@@ -3,9 +3,12 @@ import Header from "./pages/Header";
 import Explore from "./pages/Explore";
 import Live from "./pages/Live";
 import Profile from "./pages/Profile";
+import LiveRoom from "./pages/LiveRoom";
+import LiveButton from "./components/LiveButton";
 
 function App() {
-  const [activeTab, setActiveTab] = useState("explore");
+  const [activeTab, setActiveTab] = useState("live");
+  const [isLiveRoomActive, setIsLiveRoomActive] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -15,7 +18,11 @@ function App() {
         {activeTab === "live" && <Live />}
         {activeTab === "profile" && <Profile />}
       </main>
-      <div className="py-8"></div>
+
+      <LiveButton onClick={() => setIsLiveRoomActive(true)} />
+      {isLiveRoomActive && (
+        <LiveRoom roomId="123" onClose={() => setIsLiveRoomActive(false)} />
+      )}
     </div>
   );
 }

@@ -8,6 +8,8 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import CreateModal from "../components/CreateModal";
+import LiveRoomCard from "../components/LiveRoomCard";
+import ChatCard from "../components/ChatCard";
 
 export default function Live() {
   const [activeSection, setActiveSection] = useState("chats");
@@ -35,12 +37,14 @@ export default function Live() {
       title: "Tech Talk",
       participants: 120,
       speakers: ["John Doe", "Jane Smith"],
+      listeners: 1200,
     },
     {
       id: 2,
       title: "Music Lovers",
       participants: 85,
       speakers: ["Alice Johnson"],
+      listeners: 50,
     },
     // Add more room data as needed
   ]);
@@ -67,7 +71,7 @@ export default function Live() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+    <div className="bg-white rounded-lg p-6 max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-gray-800">Live</h2>
         <button
@@ -116,29 +120,7 @@ export default function Live() {
       {activeSection === "chats" && (
         <div className="space-y-4">
           {chats.map((chat) => (
-            <div
-              key={chat.id}
-              className="bg-gray-50 rounded-lg p-4 flex items-center justify-between hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
-            >
-              <div className="flex items-center">
-                {chat.type === "community" ? (
-                  <FaComments className="mr-3 text-indigo-600 text-xl" />
-                ) : (
-                  <FaUserFriends className="mr-3 text-green-600 text-xl" />
-                )}
-                <div>
-                  <h3 className="font-semibold text-gray-800">{chat.name}</h3>
-                  <p className="text-sm text-gray-600 mt-1">
-                    {chat.lastMessage}
-                  </p>
-                </div>
-              </div>
-              {chat.unread > 0 && (
-                <span className="bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                  {chat.unread}
-                </span>
-              )}
-            </div>
+            <ChatCard key={chat.id} chat={chat} />
           ))}
         </div>
       )}
@@ -146,25 +128,7 @@ export default function Live() {
       {activeSection === "talkieLive" && (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {audioRooms.map((room) => (
-            <div
-              key={room.id}
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
-            >
-              <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                {room.title}
-              </h3>
-              <div className="flex items-center text-gray-600 mb-3">
-                <FaUsers className="mr-2 text-indigo-600" />
-                <span>{room.participants} listening</span>
-              </div>
-              <div className="flex items-center text-gray-600 mb-4">
-                <FaMicrophone className="mr-2 text-indigo-600" />
-                <span className="text-sm">{room.speakers.join(", ")}</span>
-              </div>
-              <button className="w-full bg-indigo-100 text-indigo-600 font-semibold px-4 py-2 rounded-full hover:bg-indigo-200 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
-                Join Room
-              </button>
-            </div>
+            <LiveRoomCard key={room.id} room={room} />
           ))}
         </div>
       )}
