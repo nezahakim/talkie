@@ -5,9 +5,11 @@ import Live from "./pages/Live";
 import Profile from "./pages/Profile";
 import LiveStreamLayout from "./pages/LiveRoom";
 import LiveButton from "./components/LiveButton";
+import useMinimizeMaximize from "./hooks/useMinimizeMaximize";
 
 function App() {
   const [activeTab, setActiveTab] = useState("live");
+  const { maximize, minimize, isMinimized } = useMinimizeMaximize();
   const [isLiveRoomActive, setIsLiveRoomActive] = useState(false);
 
   return (
@@ -19,13 +21,8 @@ function App() {
         {activeTab === "profile" && <Profile />}
       </main>
 
-      <LiveButton onClick={() => setIsLiveRoomActive(true)} />
-      {isLiveRoomActive && (
-        <LiveStreamLayout
-          roomId="123"
-          onClose={() => setIsLiveRoomActive(false)}
-        />
-      )}
+      <LiveButton onClick={maximize} />
+      {isMinimized && <LiveStreamLayout />}
     </div>
   );
 }
