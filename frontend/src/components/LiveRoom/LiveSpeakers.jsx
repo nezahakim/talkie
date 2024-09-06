@@ -30,7 +30,7 @@ const LiveSpeakers = () => {
         <img
           src={creator.profilePic}
           alt={`Creator's profile`}
-          className="w-12 h-12 rounded-full object-cover border-2 border-white"
+          className="w-14 h-14 rounded-full object-cover border-2 border-white"
         />
         <motion.button
           className={`absolute -bottom-1 -right-1 p-1 rounded-full text-white ${
@@ -45,7 +45,7 @@ const LiveSpeakers = () => {
       </motion.div>
 
       {/* Spacer */}
-      {/* <div className="h-1"></div> */}
+      <div className="h-1"></div>
 
       {/* Non-Creators */}
       <div className="shadow-sm bg-gray-100 py-2 px-1 rounded-full flex flex-col items-end items-center space-y-2">
@@ -64,7 +64,7 @@ const LiveSpeakers = () => {
                 <img
                   src={speaker.profilePic}
                   alt={`Speaker's profile`}
-                  className="w-10 h-10 rounded-full object-cover border-2 border-gray-800"
+                  className="w-14 h-14 rounded-full object-cover border-2 border-gray-800"
                 />
                 <div className="absolute -bottom-1 -right-1 bg-gray-800 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {index + 1}
@@ -83,6 +83,8 @@ const LiveSpeakers = () => {
           </motion.button>
         )}
       </div>
+      {/* Spacer */}
+      <div className="h-1"></div>
 
       {/* Request Mic Button */}
       <motion.div
@@ -90,7 +92,7 @@ const LiveSpeakers = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+        <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center">
           <FaPlus size={14} className="text-gray-600" />
         </div>
         <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">

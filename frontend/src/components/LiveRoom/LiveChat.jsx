@@ -63,7 +63,7 @@ const LiveChat = () => {
             <span className="text-xs font-semibold text-blue-300 mb-0">
               {message.user}
             </span>
-            <div className="bg-gray-700 text-white py-0.5 px-2 rounded-full rounded-tl-none max-w-xs">
+            <div className="bg-gray-700 text-white p-2 rounded-full rounded-tl-none max-w-xs">
               {message.text}
             </div>
           </div>

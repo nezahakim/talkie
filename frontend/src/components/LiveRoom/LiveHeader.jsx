@@ -19,7 +19,7 @@ const LiveHeader = () => {
                 key={i}
                 src={`/vite.svg`}
                 alt={`Profile ${i}`}
-                className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover border-2 border-gray-800 shadow-md"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border-2 border-gray-800 shadow-md"
               />
             ))}
           </div>
@@ -35,21 +35,21 @@ const LiveHeader = () => {
           </span>
         </div>
       </div>
-      <div className="flex items-center space-x-2 sm:space-x-4">
-        <div className="flex flex-col items-end">
-          <div className="flex items-center justify-center bg-gray-700/60 px-3 py-1 rounded-full text-white text-xs font-bold shadow-md">
-            01:30
-          </div>
+      <div className="flex flex-col items-end ">
+        <div className="flex items-center justify-center bg-gray-700/60 px-3 py-1 rounded-full text-white text-xs font-bold shadow-md">
+          01:30
         </div>
-        <button className="px-3 py-1 sm:px-4 sm:py-2 bg-red-600 text-white text-xs sm:text-sm font-bold rounded-full hover:bg-red-700 transition duration-300 shadow-md">
-          Leave
-        </button>
-        <button
-          className="text-gray-300 hover:text-white transition duration-300"
-          onClick={minimize}
-        >
-          <FaMinusCircle size={20} sm:size={24} />
-        </button>
+        <div className="flex items-center items-end space-x-2 sm:space-x-4">
+          <button className="px-3 py-1 sm:px-4 sm:py-2 bg-red-600 text-white text-xs sm:text-sm font-bold rounded-full hover:bg-red-700 transition duration-300 shadow-md">
+            Leave
+          </button>
+          <button
+            className="text-gray-300 px-3 sm:px-4 sm:py-2 hover:text-white transition duration-300"
+            onClick={minimize}
+          >
+            <FaMinusCircle size={20} sm:size={24} />
+          </button>
+        </div>
       </div>
     </div>
   );
