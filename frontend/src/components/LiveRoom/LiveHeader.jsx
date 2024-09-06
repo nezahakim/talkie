@@ -1,10 +1,7 @@
 import React from "react";
 import { FaMinusCircle, FaMicrophone, FaUsers } from "react-icons/fa";
-import useMinimizeMaximize from "../../hooks/useMinimizeMaximize";
 
-const LiveHeader = () => {
-  const { isMinimized, minimize } = useMinimizeMaximize();
-
+const LiveHeader = ({ minimize }) => {
   return (
     <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-2 bg-opacity-80 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 border-b border-gray-600 shadow-lg z-10 h-20 sm:h-24 rounded-b-3xl ">
       <div className="flex flex-col items-start">

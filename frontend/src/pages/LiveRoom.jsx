@@ -63,10 +63,10 @@ import LiveSpeakers from "../components/LiveRoom/LiveSpeakers";
 //   );
 // };
 
-const LiveStreamLayout = () => {
+const LiveStreamLayout = ({ minimize }) => {
   return (
     <div className="fixed inset-0 flex flex-col bg-gray-900 overflow-hidden z-50">
-      <LiveHeader className="relative z-10" />
+      <LiveHeader minimize={minimize} className="relative z-10" />
 
       <div className="flex-1 flex overflow-hidden mt-16 relative z-9">
         <div className="flex-1 flex flex-col bg-opacity-70">

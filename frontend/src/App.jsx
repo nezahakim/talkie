@@ -10,7 +10,6 @@ import useMinimizeMaximize from "./hooks/useMinimizeMaximize";
 function App() {
   const [activeTab, setActiveTab] = useState("live");
   const { maximize, minimize, isMinimized } = useMinimizeMaximize();
-  const [isLiveRoomActive, setIsLiveRoomActive] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -22,7 +21,7 @@ function App() {
       </main>
 
       <LiveButton onClick={maximize} />
-      {isMinimized && <LiveStreamLayout />}
+      {isMinimized && <LiveStreamLayout minimize={minimize} />}
     </div>
   );
 }
