@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  "https://94458d4a-03fc-40fe-9c73-a107faef071c-00-126sm7vflti8p.spock.replit.dev:3000/api";
+const API_BASE_URL = "https://talkie-back.vercel.app/api";
 
 class Api {
   constructor() {
