@@ -50,8 +50,8 @@ const LiveHeader = () => {
   return (
     <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-2 bg-opacity-80 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 border-b border-gray-600 shadow-lg z-10 h-20 sm:h-24 rounded-b-3xl ">
       <div className="flex flex-col items-start">
-        <div className="bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center bg-gray-700/60 px-3 py-1 rounded-full text-white text-xs font-bold shadow-md">
-          <FaMicrophone className="mr-1" size={10} />
+        <div className="bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center px-3 py-1 rounded-full text-white text-14 font-bold shadow-md">
+          <FaMicrophone className="mr-1" size={14} />
           Tech Enthusiasm
         </div>
         <div className="flex items-center mt-1 sm:mt-2">
@@ -61,7 +61,7 @@ const LiveHeader = () => {
                 key={i}
                 src={`/vite.svg`}
                 alt={`Profile ${i}`}
-                className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border-2 border-gray-800 shadow-md"
+                className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover border-2 border-gray-800 shadow-md"
               />
             ))}
           </div>

@@ -1,41 +1,134 @@
-import React, { useState } from "react";
-import { FaPaperPlane, FaImage, FaGift, FaSmile } from "react-icons/fa";
+// import React, { useState } from "react";
+// import {
+//   FaArrowUp,
+//   FaDice,
+//   FaGift,
+//   FaGamepad,
+//   FaMagnifyingGlass,
+// } from "react-icons/fa6";
+
+// const LiveChatSendText = () => {
+//   const [message, setMessage] = useState("");
+
+//   const handleSend = () => {
+//     if (message.trim()) {
+//       console.log("Message sent:", message);
+//       setMessage("");
+//     }
+//   };
+
+//   return (
+//     <div className="flex items-center space-x-2 bg-gray-900 p-2 rounded-lg">
+//       <div className="flex-grow">
+//         <input
+//           type="text"
+//           value={message}
+//           onChange={(e) => setMessage(e.target.value)}
+//           placeholder="Send a message"
+//           className="w-full bg-gray-800 text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-700"
+//         />
+//       </div>
+//       <button className="p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-colors duration-300">
+//         <FaArrowUp size={20} />
+//       </button>
+//       <button className="p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-colors duration-300">
+//         <FaDice size={20} />
+//       </button>
+//       <button className="p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-colors duration-300">
+//         <FaGift size={20} />
+//       </button>
+//       <button className="p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-colors duration-300">
+//         <FaGamepad size={20} />
+//       </button>
+//       <button className="p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-colors duration-300">
+//         <FaMagnifyingGlass size={20} />
+//       </button>
+//     </div>
+//   );
+// };
+
+// export default LiveChatSendText;
+
+import React, { useState, useRef, useEffect } from "react";
+import {
+  FaArrowUp,
+  FaMicrophone,
+  FaDice,
+  FaGift,
+  FaGamepad,
+  FaMagnifyingGlass,
+} from "react-icons/fa6";
 
 const LiveChatSendText = () => {
   const [message, setMessage] = useState("");
+  const [isExpanded, setIsExpanded] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (isExpanded && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isExpanded]);
 
   const handleSend = () => {
-    console.log("Message sent:", message);
-    setMessage("");
+    if (message.trim()) {
+      console.log("Message sent:", message);
+      setMessage("");
+      setIsExpanded(false);
+    }
+  };
+
+  const handleInputClick = () => {
+    setIsExpanded(true);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
   };
 
   return (
-    <div className="flex items-center p-4 bg-gray-800 border-t border-gray-700 rounded-b-lg shadow-inner">
-      <div className="flex items-center space-x-3 mr-4">
-        <button className="text-gray-400 hover:text-white transition duration-300 transform hover:scale-110">
-          <FaImage size={20} />
-        </button>
-        <button className="text-gray-400 hover:text-white transition duration-300 transform hover:scale-110">
-          <FaGift size={20} />
-        </button>
-        <button className="text-gray-400 hover:text-white transition duration-300 transform hover:scale-110">
-          <FaSmile size={20} />
-        </button>
-      </div>
-      <div className="flex-1 relative">
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          rows="1"
-          placeholder="Type your message..."
-          className="w-full bg-gray-700 text-white rounded-full py-2 px-4 pr-12 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
-        />
-        <button
-          onClick={handleSend}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 flex items-center justify-center"
+    <div className="bg-gray-900 p-2 rounded-lg transition-all duration-300">
+      <div className="flex items-center space-x-2">
+        <div
+          className={`flex-grow transition-all duration-300 ${isExpanded ? "w-full" : "w-100vh"}`}
         >
-          <FaPaperPlane size={16} />
-        </button>
+          <input
+            ref={inputRef}
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onClick={handleInputClick}
+            onKeyPress={handleKeyPress}
+            placeholder="Send a message"
+            className="w-full bg-gray-800 text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-700"
+          />
+        </div>
+        {isExpanded ? (
+          <button
+            onClick={handleSend}
+            className="p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-colors duration-300"
+          >
+            <FaArrowUp size={20} />
+          </button>
+        ) : (
+          <>
+            <button className="p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-colors duration-300">
+              <FaDice size={20} />
+            </button>
+            <button className="p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-colors duration-300">
+              <FaGift size={20} />
+            </button>
+            <button className="p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-colors duration-300">
+              <FaGamepad size={20} />
+            </button>
+            <button className="p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-colors duration-300">
+              <FaMicrophone size={20} />
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

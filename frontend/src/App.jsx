@@ -3,7 +3,7 @@ import Header from "./pages/Header";
 import Explore from "./pages/Explore";
 import Live from "./pages/Live";
 import Profile from "./pages/Profile";
-import LiveRoom from "./pages/LiveRoom";
+import LiveStreamLayout from "./pages/LiveRoom";
 import LiveButton from "./components/LiveButton";
 
 function App() {
@@ -21,7 +21,10 @@ function App() {
 
       <LiveButton onClick={() => setIsLiveRoomActive(true)} />
       {isLiveRoomActive && (
-        <LiveRoom roomId="123" onClose={() => setIsLiveRoomActive(false)} />
+        <LiveStreamLayout
+          roomId="123"
+          onClose={() => setIsLiveRoomActive(false)}
+        />
       )}
     </div>
   );

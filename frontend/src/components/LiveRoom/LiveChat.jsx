@@ -9,6 +9,36 @@ const messages = [
     profilePic: "/images/alice-profile.jpg",
   },
   {
+    id: 1,
+    text: "Hello, how are you?",
+    user: "Alice",
+    profilePic: "/images/alice-profile.jpg",
+  },
+  {
+    id: 1,
+    text: "Hello, how are you?",
+    user: "Alice",
+    profilePic: "/images/alice-profile.jpg",
+  },
+  {
+    id: 1,
+    text: "Hello, how are you?",
+    user: "Alice",
+    profilePic: "/images/alice-profile.jpg",
+  },
+  {
+    id: 1,
+    text: "Hello, how are you?",
+    user: "Alice",
+    profilePic: "/images/alice-profile.jpg",
+  },
+  {
+    id: 1,
+    text: "Hello, how are you?",
+    user: "Alice",
+    profilePic: "/images/alice-profile.jpg",
+  },
+  {
     id: 2,
     text: "I'm good, thanks! How about you?",
     user: "Bob",
