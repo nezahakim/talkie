@@ -2,14 +2,10 @@ import React from "react";
 import { FaComments, FaUserFriends } from "react-icons/fa";
 
 const ChatCard = ({ chat }) => {
-  const handleClick = () => {
-    console.log("chat");
-  };
   return (
     <div
       key={chat.id}
       className="bg-gray-50 rounded-lg p-4 flex items-center justify-between hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
-      onClick={handleClick}
     >
       <div className="flex items-center">
         {chat.type === "community" ? (

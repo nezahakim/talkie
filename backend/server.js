@@ -82,9 +82,9 @@ app.use("/api/sessions", sessionRoutes);
 app.use("/api/communities", communityRoutes);
 
 // Test endpoint for streaming
-app.get("/", (req, res) => {
-  res.sendFile(new URL("./test/index.html", import.meta.url).pathname);
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(new URL("./test/index.html", import.meta.url).pathname);
+// });
 
 app.use(errorHandler);
 

@@ -34,7 +34,7 @@ router.post("/login", async (req, res, next) => {
           process.env.JWT_SECRET,
           { expiresIn: "24h" },
         );
-        res.json({ token });
+        res.json({ token, user_id: user.user_id });
       } else {
         res.status(400).json({ message: "Invalid credentials" });
       }
@@ -46,12 +46,40 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
+// router.get("/:userId", authenticateToken, async (req, res, next) => {
+//   try {
+//     const result = await db.query(
+//       "SELECT user_id, username, email, profile_picture, language, country, created_at, last_login FROM users WHERE user_id = $1",
+//       [req.params.userId],
+//     );
+//     if (result.rows.length > 0) {
+//       res.json(result.rows[0]);
+//     } else {
+//       res.status(404).json({ message: "User not found" });
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+// At the top of your file, add this function:
+function isValidUUID(uuid) {
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(uuid);
+}
 router.get("/:userId", authenticateToken, async (req, res, next) => {
   try {
+    const userId = req.params.userId;
+    if (!isValidUUID(userId)) {
+      return res.status(400).json({ message: "Invalid user ID format" });
+    }
+
     const result = await db.query(
       "SELECT user_id, username, email, profile_picture, language, country, created_at, last_login FROM users WHERE user_id = $1",
-      [req.params.userId],
+      [userId],
     );
+
     if (result.rows.length > 0) {
       res.json(result.rows[0]);
     } else {

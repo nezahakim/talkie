@@ -16,3 +16,13 @@
 {"level":"info","message":"Server running on port 3010","service":"user-service"}
 {"level":"info","message":"Server running on port 3010","service":"user-service"}
 {"level":"info","message":"Server running on port 3010","service":"user-service"}
+{"level":"info","message":"Server running on port 3010","service":"user-service"}
+{"level":"error","message":"error: invalid input syntax for type uuid: \"undefined\"\n    at /home/runner/talkie/backend/node_modules/pg-pool/index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async file:///home/runner/talkie/backend/routes/users.js:51:20","service":"user-service"}
+{"level":"error","message":"error: invalid input syntax for type uuid: \"undefined\"\n    at /home/runner/talkie/backend/node_modules/pg-pool/index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async file:///home/runner/talkie/backend/routes/users.js:51:20","service":"user-service"}
+{"level":"info","message":"Server running on port 3010","service":"user-service"}
+{"level":"error","message":"error: invalid input syntax for type uuid: \"undefined\"\n    at /home/runner/talkie/backend/node_modules/pg-pool/index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async file:///home/runner/talkie/backend/routes/users.js:51:20","service":"user-service"}
+{"level":"error","message":"error: invalid input syntax for type uuid: \"undefined\"\n    at /home/runner/talkie/backend/node_modules/pg-pool/index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async file:///home/runner/talkie/backend/routes/users.js:51:20","service":"user-service"}
+{"level":"error","message":"error: invalid input syntax for type uuid: \"undefined\"\n    at /home/runner/talkie/backend/node_modules/pg-pool/index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async file:///home/runner/talkie/backend/routes/users.js:51:20","service":"user-service"}
+{"level":"info","message":"Server running on port 3010","service":"user-service"}
+{"level":"info","message":"Server running on port 3010","service":"user-service"}
+{"level":"info","message":"Server running on port 3010","service":"user-service"}
