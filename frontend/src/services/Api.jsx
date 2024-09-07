@@ -139,11 +139,165 @@
 
 // export default new Api();
 
+// class Api {
+//   constructor() {
+//     this.axios = axios.create({
+//       baseURL: API_BASE_URL,
+//     });
+
+//     this.axios.interceptors.request.use((config) => {
+//       const token = localStorage.getItem("token");
+//       if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//       }
+//       return config;
+//     });
+
+//     this.axios.interceptors.response.use(
+//       (response) => response,
+//       (error) => {
+//         if (error.response && error.response.status === 401) {
+//           localStorage.removeItem("token");
+//           // Optionally, redirect to login page or dispatch a logout action
+//         }
+//         return Promise.reject(error);
+//       },
+//     );
+//   }
+
+//   // User routes
+//   async register(userData) {
+//     const response = await this.axios.post("/auth/register", userData);
+//     return response.data;
+//   }
+
+//   async login(credentials) {
+//     const response = await this.axios.post("/auth/login", credentials);
+//     if (response.data.token) {
+//       localStorage.setItem("token", response.data.token);
+//       localStorage.setItem("user_id", response.data.user_id);
+//     }
+//     return response.data;
+//   }
+
+//   async getUserProfile(user_id) {
+//     const userId = localStorage.getItem("user_id");
+//     if (!userId) {
+//       throw new Error("User ID is required to fetch user profile");
+//     }
+//     try {
+//       const response = await this.axios.get(`/users/profile`);
+//       return response.data;
+//     } catch (error) {
+//       console.error("Error fetching user profile:", error);
+//       throw error;
+//     }
+//   }
+
+//   async updateUserProfile(userData) {
+//     const userId = localStorage.getItem("user_id");
+//     const response = await this.axios.put(`/users/profile`, userData);
+//     return response.data;
+//   }
+
+//   async followUser(userId) {
+//     const response = await this.axios.post(`/users/follow/${userId}`);
+//     return response.data;
+//   }
+
+//   async unfollowUser(userId) {
+//     const response = await this.axios.delete(`/users/unfollow/${userId}`);
+//     return response.data;
+//   }
+
+//   // Room routes
+//   async createRoom(roomData) {
+//     const response = await this.axios.post("/rooms", roomData);
+//     return response.data;
+//   }
+
+//   async getRooms() {
+//     const response = await this.axios.get("/rooms");
+//     return response.data;
+//   }
+
+//   async joinRoom(sessionId) {
+//     const response = await this.axios.post(`/rooms/${sessionId}/join`);
+//     return response.data;
+//   }
+
+//   async leaveRoom(sessionId) {
+//     const response = await this.axios.post(`/rooms/${sessionId}/leave`);
+//     return response.data;
+//   }
+
+//   async endRoom(sessionId) {
+//     const response = await this.axios.post(`/rooms/${sessionId}/end`);
+//     return response.data;
+//   }
+
+//   async startStreaming(sessionId) {
+//     const response = await this.axios.post(`/rooms/${sessionId}/stream/start`);
+//     return response.data;
+//   }
+
+//   async stopStreaming(sessionId) {
+//     const response = await this.axios.post(`/rooms/${sessionId}/stream/stop`);
+//     return response.data;
+//   }
+
+//   async processAudioStream(sessionId, audioData) {
+//     const response = await this.axios.post(
+//       `/rooms/${sessionId}/stream/process`,
+//       audioData,
+//     );
+//     return response.data;
+//   }
+
+//   async getActiveSpeakers(sessionId) {
+//     const response = await this.axios.get(`/rooms/${sessionId}/speakers`);
+//     return response.data;
+//   }
+
+//   // WebSocket connection for live sessions
+//   connectToSession(sessionId, handlers) {
+//     const token = localStorage.getItem("token");
+//     const ws = new WebSocket(
+//       `${WS_BASE_URL}/sessions/${sessionId}?token=${token}`,
+//     );
+
+//     ws.onopen = () => {
+//       console.log("WebSocket connection established");
+//       if (handlers.onOpen) handlers.onOpen();
+//     };
+
+//     ws.onmessage = (event) => {
+//       const data = JSON.parse(event.data);
+//       if (handlers.onMessage) handlers.onMessage(data);
+//     };
+
+//     ws.onclose = () => {
+//       console.log("WebSocket connection closed");
+//       if (handlers.onClose) handlers.onClose();
+//     };
+
+//     ws.onerror = (error) => {
+//       console.error("WebSocket error:", error);
+//       if (handlers.onError) handlers.onError(error);
+//     };
+
+//     return {
+//       send: (message) => ws.send(JSON.stringify(message)),
+//       close: () => ws.close(),
+//     };
+//   }
+// }
+
+// export default new Api();
 import axios from "axios";
 
-// Base URL for API requests
 const API_BASE_URL = "https://talkie-back.vercel.app/api";
-const WS_BASE_URL = "wss://talkie-back.vercel.app/ws"; // Adjust based on actual WebSocket URL
+const WS_BASE_URL = "wss://talkie-back.vercel.app/ws";
 
 class Api {
   constructor() {
@@ -151,14 +305,21 @@ class Api {
       baseURL: API_BASE_URL,
     });
 
-    this.axios.interceptors.request.use((config) => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    });
+    // Request interceptor to add the token to headers
+    this.axios.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          config.headers["x-auth-token"] = token;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      },
+    );
 
+    // Response interceptor to handle errors
     this.axios.interceptors.response.use(
       (response) => response,
       (error) => {
@@ -171,14 +332,14 @@ class Api {
     );
   }
 
-  // User routes
+  // User methods
   async register(userData) {
-    const response = await this.axios.post("/auth/register", userData);
+    const response = await this.axios.post("/users/register", userData);
     return response.data;
   }
 
   async login(credentials) {
-    const response = await this.axios.post("/auth/login", credentials);
+    const response = await this.axios.post("/users/login", credentials);
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user_id", response.data.user_id);
@@ -186,13 +347,9 @@ class Api {
     return response.data;
   }
 
-  async getUserProfile(user_id) {
-    const userId = localStorage.getItem("user_id");
-    if (!userId) {
-      throw new Error("User ID is required to fetch user profile");
-    }
+  async getUserProfile() {
     try {
-      const response = await this.axios.get(`/users/profile`);
+      const response = await this.axios.get("/users/profile");
       return response.data;
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -200,9 +357,8 @@ class Api {
     }
   }
 
-  async updateUserProfile(userData) {
-    const userId = localStorage.getItem("user_id");
-    const response = await this.axios.put(`/users/profile`, userData);
+  async updateUserProfile(userId, userData) {
+    const response = await this.axios.put(`/users/${userId}`, userData);
     return response.data;
   }
 
@@ -216,52 +372,45 @@ class Api {
     return response.data;
   }
 
-  // Room routes
-  async createRoom(roomData) {
-    const response = await this.axios.post("/rooms", roomData);
+  // Session methods
+  async createSession(sessionData) {
+    const response = await this.axios.post("/sessions", sessionData);
     return response.data;
   }
 
-  async getRooms() {
-    const response = await this.axios.get("/rooms");
+  async endSession(sessionId) {
+    const response = await this.axios.post(`/sessions/${sessionId}/end`);
     return response.data;
   }
 
-  async joinRoom(sessionId) {
-    const response = await this.axios.post(`/rooms/${sessionId}/join`);
+  async getActiveSessions() {
+    const response = await this.axios.get("/sessions/active");
     return response.data;
   }
 
-  async leaveRoom(sessionId) {
-    const response = await this.axios.post(`/rooms/${sessionId}/leave`);
+  async joinSession(sessionId) {
+    const response = await this.axios.post(`/sessions/${sessionId}/join`);
     return response.data;
   }
 
-  async endRoom(sessionId) {
-    const response = await this.axios.post(`/rooms/${sessionId}/end`);
+  async leaveSession(sessionId) {
+    const response = await this.axios.post(`/sessions/${sessionId}/leave`);
     return response.data;
   }
 
-  async startStreaming(sessionId) {
-    const response = await this.axios.post(`/rooms/${sessionId}/stream/start`);
+  // Community methods
+  async createCommunity(communityData) {
+    const response = await this.axios.post("/communities", communityData);
     return response.data;
   }
 
-  async stopStreaming(sessionId) {
-    const response = await this.axios.post(`/rooms/${sessionId}/stream/stop`);
+  async getCommunity(communityId) {
+    const response = await this.axios.get(`/communities/${communityId}`);
     return response.data;
   }
 
-  async processAudioStream(sessionId, audioData) {
-    const response = await this.axios.post(
-      `/rooms/${sessionId}/stream/process`,
-      audioData,
-    );
-    return response.data;
-  }
-
-  async getActiveSpeakers(sessionId) {
-    const response = await this.axios.get(`/rooms/${sessionId}/speakers`);
+  async deleteCommunity(communityId) {
+    const response = await this.axios.delete(`/communities/${communityId}`);
     return response.data;
   }
 
