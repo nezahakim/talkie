@@ -181,7 +181,7 @@ class Api {
     const response = await this.axios.post("/auth/login", credentials);
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user_id", response.data.user_id);
+      localStorage.setItem("user_id", response.data.userId);
     }
     return response.data;
   }
@@ -192,7 +192,14 @@ class Api {
       throw new Error("User ID is required to fetch user profile");
     }
     try {
-      const response = await this.axios.get(`/users/profile`);
+      const response = await this.axios.get(`/users/profile`, {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        },
+        params: {
+          userId,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error("Error fetching user profile:", error);
