@@ -91,15 +91,17 @@ function MainApp() {
 }
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const token = localStorage.getItem("token");
+  const isLoggedIn = token !== null;
+  const [isAuthenticated, setIsAuthenticated] = useState(isLoggedIn);
 
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-  };
+  // const handleLogout = () => {
+  //   setIsAuthenticated(false);
+  // };
 
   return (
     <Router>
@@ -109,11 +111,7 @@ function App() {
         <Route
           path="/*"
           element={
-            isAuthenticated ? (
-              <MainApp onLogout={handleLogout} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
+            isAuthenticated ? <MainApp /> : <Navigate to="/login" replace />
           }
         />
       </Routes>

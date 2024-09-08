@@ -143,7 +143,7 @@ import axios from "axios";
 
 // Base URL for API requests
 const API_BASE_URL = "https://talkie-back.vercel.app/api";
-const WS_BASE_URL = "wss://talkie-back.vercel.app/ws"; // Adjust based on actual WebSocket URL
+const WS_BASE_URL = "wss://talkie-back.vercel.app/ws";
 
 class Api {
   constructor() {
