@@ -348,7 +348,6 @@ import {
   Twitter,
   Instagram,
 } from "lucide-react";
-import { FaLinkedIn } from "react-icons/fa";
 import {
   Button,
   Input,
@@ -359,6 +358,7 @@ import {
   Switch,
 } from "../components/ui/UI";
 import { CountrySelect } from "../components/ui/CountrySelect";
+import Api from "../services/Api";
 
 const steps = [
   {
@@ -414,7 +414,7 @@ const Registration = () => {
       facebook: "",
       twitter: "",
       instagram: "",
-      FaLinkedIn: "",
+      Hash: "",
     },
     preferences: {
       newsletter: false,
@@ -505,8 +505,9 @@ const Registration = () => {
         const { confirmPassword, ...registrationData } = formData;
         // Simulating API call
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        console.log("Registration data:", registrationData);
-        navigate("/login");
+        await Api.register(registrationData);
+        // console.log("Registration data:", registrationData);
+        navigate("/");
       } catch (err) {
         setErrors({ submit: err.message || "Registration failed" });
       } finally {
@@ -587,8 +588,8 @@ const Registration = () => {
                 {platform === "instagram" && (
                   <Instagram size={18} className="text-pink-600" />
                 )}
-                {platform === "FaLinkedIn" && (
-                  <FaLinkedIn size={18} className="text-blue-700" />
+                {platform === "Hash" && (
+                  <Hash size={18} className="text-blue-700" />
                 )}
                 <Input
                   type="text"
