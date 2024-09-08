@@ -106,6 +106,9 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/profile" element={<Explore />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/live" element={<Live />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route
