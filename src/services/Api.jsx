@@ -140,9 +140,11 @@
 // export default new Api();
 
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 // Base URL for API requests
-const API_BASE_URL = "https://talkie-back.vercel.app/api";
+const API_BASE_URL =
+  "https://0d3a37b3-590d-4da3-892e-347bbc5cb91e-00-1gsjkthjnxlbp.spock.replit.dev/api";
 const WS_BASE_URL = "wss://talkie-back.vercel.app/ws";
 
 class Api {
@@ -164,6 +166,7 @@ class Api {
       (error) => {
         if (error.response && error.response.status === 401) {
           localStorage.removeItem("token");
+          return <Navigate to="/login" replace />;
           // Optionally, redirect to login page or dispatch a logout action
         }
         return Promise.reject(error);
@@ -181,25 +184,34 @@ class Api {
     const response = await this.axios.post("/auth/login", credentials);
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user_id", response.data.userId);
+      localStorage.setItem("user", response.data.user);
     }
     return response.data;
   }
 
-  async getUserProfile(user_id) {
-    const userId = localStorage.getItem("user_id");
-    if (!userId) {
-      throw new Error("User ID is required to fetch user profile");
+  async getUserProfile(username) {
+    let endpoint;
+    if (!username) {
+      endpoint = `/users/profile`;
+    } else {
+      endpoint = `/users/profile/${username}`;
     }
+
     try {
-      const response = await this.axios.get(`/users/profile`, {
+      const response = await this.axios.get(endpoint, {
         headers: {
           "x-auth-token": localStorage.getItem("token"),
         },
         params: {
-          userId,
+          userId: localStorage.getItem("user"),
         },
       });
+
+      if (response.data.message == "Token is not valid") {
+        localStorage.removeItem("token");
+        return <Navigate to="/login" replace />;
+      }
+
       return response.data;
     } catch (error) {
       console.error("Error fetching user profile:", error);
