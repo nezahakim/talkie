@@ -6,6 +6,7 @@ import Header from "../components/community/Header";
 import ChatSendText from "../components/community/ChatSendText";
 import MembersList from "../components/community/MembersList";
 import useRealTimeUpdates from "../hooks/useRealTimeUpdates";
+import CommunityWelcomeMessage from "../components/community/CommunityWelcomeMessage";
 import { format } from "date-fns";
 
 const Community = () => {
@@ -113,9 +114,16 @@ const Community = () => {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-gray-900 overflow-hidden z-50">
-      <Header
+      {/* <Header
         communityInfo={communityInfo}
         membersCount={members?.length}
+        onLeave={handleLeaveChat}
+        onToggleMembers={() => setShowMembers(!showMembers)}
+      /> */}
+      <Header
+        communityInfo={communityInfo}
+        members={members}
+        currentUserId={localStorage.getItem("user_id")} // You'll need to provide this
         onLeave={handleLeaveChat}
         onToggleMembers={() => setShowMembers(!showMembers)}
       />
@@ -127,6 +135,12 @@ const Community = () => {
                 className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300 py-4 w-full"
                 ref={chatRef}
               >
+                {communityInfo && (
+                  <CommunityWelcomeMessage
+                    communityInfo={communityInfo}
+                    membersCount={members?.length || 0}
+                  />
+                )}
                 <div className="bg-gray-800 p-4 rounded-lg w-full">
                   {messages?.map((message) => (
                     <div
