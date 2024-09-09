@@ -9,8 +9,6 @@ import {
 } from "react-icons/fa";
 
 export default function Header({ activeTab, setActiveTab }) {
-    // const [activeTab, setActiveTab] = useState("");
-
     const tabs = [
         { id: "explore", icon: <FaCompass />, label: "Explore" },
         { id: "live", icon: <FaMicrophone />, label: "Live" },

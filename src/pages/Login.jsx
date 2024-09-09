@@ -22,8 +22,8 @@ const Login = ({ onLogin }) => {
 
     try {
       await Api.login(formData);
-      onLogin(); // Call the onLogin prop to update authentication state
-      navigate("/"); // Navigate to the main app
+      onLogin(localStorage.getItem("token"));
+      navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     } finally {

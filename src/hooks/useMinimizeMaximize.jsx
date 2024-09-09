@@ -17,12 +17,10 @@ const useMinimizeMaximize = () => {
 
   const minimize = () => {
     setIsMinimized(false);
-    console.log(isMinimized);
     return true;
   };
 
   const maximize = () => {
-    console.log(isMinimized);
     setIsMinimized(!isMinimized);
     return false;
   };

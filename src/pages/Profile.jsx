@@ -11,10 +11,11 @@ import {
 import { useParams } from "react-router-dom";
 import Api from "../services/Api";
 
-export default function Profile() {
+export default function Profile({ onLogout }) {
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -27,7 +28,6 @@ export default function Profile() {
     };
     getData();
   }, []);
-  // console.log(user);
 
   if (!user) {
     return (
@@ -161,7 +161,7 @@ export default function Profile() {
                   key={index}
                   className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium"
                 >
-                  #{topic}
+                  #{topic.replace("#", "")}
                 </span>
               ))}
           </div>
@@ -188,6 +188,18 @@ export default function Profile() {
 
         {/* Tab Content */}
         <div className="bg-white px-4 py-5 sm:px-6">{renderTabContent()}</div>
+        {username ? (
+          ""
+        ) : (
+          <div className="bg-white px-4 py-5 sm:px-6">
+            <button
+              className="inline-flex justify-center items-center px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 text-sm font-medium rounded-full transition-colors duration-300"
+              onClick={onLogout}
+            >
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
