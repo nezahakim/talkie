@@ -219,8 +219,6 @@ export default function Live() {
     chat.chat_name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  console.log(chats);
-
   const filteredAudioRooms = audioRooms.filter((room) =>
     room.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );

@@ -236,6 +236,11 @@ class Api {
     return response.data;
   }
 
+  async getCommunityInfo(chatId) {
+    const response = await this.axios.get("/communities/" + chatId);
+    return response.data;
+  }
+
   async joinCommunityChat(communityId) {
     const response = await this.axios.post(
       `/chats/community/${communityId}/join`,
@@ -405,12 +410,14 @@ class Api {
 
       ws.onclose = (event) => {
         console.log(
-          `Chat WebSocket connection closed. Code: ${event.code}, Reason: ${event.reason}`
+          `Chat WebSocket connection closed. Code: ${event.code}, Reason: ${event.reason}`,
         );
         if (handlers.onClose) handlers.onClose(event);
         if (retryCount < maxRetries) {
           retryCount++;
-          console.log(`Attempting to reconnect (${retryCount}/${maxRetries})...`);
+          console.log(
+            `Attempting to reconnect (${retryCount}/${maxRetries})...`,
+          );
           setTimeout(connect, 3000 * Math.pow(2, retryCount)); // Exponential backoff
         } else {
           console.error("Max retries reached. WebSocket connection failed.");
@@ -445,20 +452,22 @@ class Api {
           ws.send(JSON.stringify(message));
         } else {
           console.error(
-            `WebSocket is not open (readyState: ${ws.readyState}). Message not sent.`
+            `WebSocket is not open (readyState: ${ws.readyState}). Message not sent.`,
           );
           checkConnection();
         }
       },
       close: () => {
         clearInterval(heartbeatInterval);
-        if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+        if (
+          ws.readyState === WebSocket.OPEN ||
+          ws.readyState === WebSocket.CONNECTING
+        ) {
           ws.close();
         }
       },
     };
   }
-
 }
 
 export default new Api();
