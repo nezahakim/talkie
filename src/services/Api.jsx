@@ -295,6 +295,87 @@ class Api {
   //   };
   // }
 
+  // connectToChat(chatId, handlers) {
+  //   const token = localStorage.getItem("token");
+  //   const maxRetries = 5;
+  //   let retryCount = 0;
+  //   let ws;
+
+  //   function connect() {
+  //     const url = `${WS_BASE_URL}/chats/${chatId}?token=${token}`;
+  //     console.log(`Attempting to connect to WebSocket: ${url}`);
+
+  //     ws = new WebSocket(url);
+
+  //     ws.onopen = () => {
+  //       console.log("Chat WebSocket connection established");
+  //       retryCount = 0;
+  //       if (handlers.onOpen) handlers.onOpen();
+  //     };
+
+  //     ws.onmessage = (event) => {
+  //       try {
+  //         const data = JSON.parse(event.data);
+  //         if (handlers.onMessage) handlers.onMessage(data);
+  //       } catch (error) {
+  //         console.error("Error parsing WebSocket message:", error);
+  //       }
+  //     };
+
+  //     ws.onclose = (event) => {
+  //       console.log(
+  //         `Chat WebSocket connection closed. Code: ${event.code}, Reason: ${event.reason}`,
+  //       );
+  //       if (handlers.onClose) handlers.onClose(event);
+
+  //       if (retryCount < maxRetries) {
+  //         retryCount++;
+  //         console.log(
+  //           `Attempting to reconnect (${retryCount}/${maxRetries})...`,
+  //         );
+  //         setTimeout(connect, 3000);
+  //       } else {
+  //         console.error("Max retries reached. WebSocket connection failed.");
+  //       }
+  //     };
+
+  //     ws.onerror = (error) => {
+  //       console.error("Chat WebSocket error:", error);
+  //       console.log("WebSocket readyState:", ws.readyState);
+  //       console.log("Navigator online status:", navigator.onLine);
+
+  //       // Log additional information about the WebSocket
+  //       console.log("WebSocket URL:", ws.url);
+  //       console.log("WebSocket protocol:", ws.protocol);
+  //       console.log("WebSocket extensions:", ws.extensions);
+
+  //       if (handlers.onError) handlers.onError(error);
+  //     };
+  //   }
+
+  //   connect();
+
+  //   return {
+  //     send: (message) => {
+  //       if (ws.readyState === WebSocket.OPEN) {
+  //         ws.send(JSON.stringify(message));
+  //       } else {
+  //         console.error(
+  //           `WebSocket is not open (readyState: ${ws.readyState}). Message not sent.`,
+  //         );
+  //       }
+  //     },
+  //     close: () => {
+  //       if (
+  //         ws.readyState === WebSocket.OPEN ||
+  //         ws.readyState === WebSocket.CONNECTING
+  //       ) {
+  //         ws.close();
+  //       }
+  //     },
+  //   };
+  // }
+
   connectToChat(chatId, handlers) {
     const token = localStorage.getItem("token");
     const maxRetries = 5;
@@ -302,7 +383,7 @@ class Api {
     let ws;
 
     function connect() {
-      const url = `${WS_BASE_URL}/chats/${chatId}?token=${token}`;
+      const url = `${WS_BASE_URL}/ws/chats/${chatId}?token=${token}`;
       console.log(`Attempting to connect to WebSocket: ${url}`);
 
       ws = new WebSocket(url);
@@ -324,16 +405,13 @@ class Api {
 
       ws.onclose = (event) => {
         console.log(
-          `Chat WebSocket connection closed. Code: ${event.code}, Reason: ${event.reason}`,
+          `Chat WebSocket connection closed. Code: ${event.code}, Reason: ${event.reason}`
         );
         if (handlers.onClose) handlers.onClose(event);
-
         if (retryCount < maxRetries) {
           retryCount++;
-          console.log(
-            `Attempting to reconnect (${retryCount}/${maxRetries})...`,
-          );
-          setTimeout(connect, 3000);
+          console.log(`Attempting to reconnect (${retryCount}/${maxRetries})...`);
+          setTimeout(connect, 3000 * Math.pow(2, retryCount)); // Exponential backoff
         } else {
           console.error("Max retries reached. WebSocket connection failed.");
         }
@@ -341,19 +419,25 @@ class Api {
 
       ws.onerror = (error) => {
         console.error("Chat WebSocket error:", error);
-        console.log("WebSocket readyState:", ws.readyState);
-        console.log("Navigator online status:", navigator.onLine);
-
-        // Log additional information about the WebSocket
-        console.log("WebSocket URL:", ws.url);
-        console.log("WebSocket protocol:", ws.protocol);
-        console.log("WebSocket extensions:", ws.extensions);
-
         if (handlers.onError) handlers.onError(error);
       };
     }
 
+    function checkConnection() {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: "ping" }));
+      } else {
+        console.log("WebSocket not open, attempting to reconnect...");
+        connect();
+      }
+    }
+
     connect();
+
+    // Set up a heartbeat to keep the connection alive
+    const heartbeatInterval = setInterval(() => {
+      checkConnection();
+    }, 30000);
 
     return {
       send: (message) => {
@@ -361,20 +445,20 @@ class Api {
           ws.send(JSON.stringify(message));
         } else {
           console.error(
-            `WebSocket is not open (readyState: ${ws.readyState}). Message not sent.`,
+            `WebSocket is not open (readyState: ${ws.readyState}). Message not sent.`
           );
+          checkConnection();
         }
       },
       close: () => {
-        if (
-          ws.readyState === WebSocket.OPEN ||
-          ws.readyState === WebSocket.CONNECTING
-        ) {
+        clearInterval(heartbeatInterval);
+        if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
           ws.close();
         }
       },
     };
   }
+
 }
 
 export default new Api();
