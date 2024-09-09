@@ -1,5 +1,8 @@
 import io from "socket.io-client";
 
+const API_BASE_URL = "https://talkie-back.vercel.app/api";
+const WS_BASE_URL = "wss://talkie-back.vercel.app/ws";
+
 class ChatConnection {
   constructor(chatId, token, handlers) {
     this.chatId = chatId;
@@ -28,7 +31,7 @@ class ChatConnection {
   }
 
   connectWebSocket() {
-    const url = `https://${process.env.WS_BASE_URL}`;
+    const url = `https://${WS_BASE_URL}`;
 
     this.socket = io(url, {
       path: `/chats/${this.chatId}`,
@@ -107,7 +110,7 @@ class ChatConnection {
       if (!this.isConnected) return;
 
       fetch(
-        `${process.env.API_BASE_URL}/chats/${this.chatId}/messages?since=${this.lastMessageId || ""}`,
+        `${API_BASE_URL}/chats/${this.chatId}/messages?since=${this.lastMessageId || ""}`,
         {
           headers: {
             Authorization: `Bearer ${this.token}`,
@@ -145,7 +148,7 @@ class ChatConnection {
     ) {
       this.socket.emit("message", message);
     } else {
-      fetch(`${process.env.API_BASE_URL}/chats/${this.chatId}/messages`, {
+      fetch(`${API_BASE_URL}/chats/${this.chatId}/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

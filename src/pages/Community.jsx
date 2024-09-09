@@ -236,8 +236,6 @@
 
 // export default Community;
 
-
-
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Api from "../services/Api";
@@ -305,7 +303,12 @@ const Community = () => {
   };
 
   const fetchPinnedMessages = async () => {
-    const fetchedPinnedMessages = await Api.getChatMessages(chatId, 10, 0, true);
+    const fetchedPinnedMessages = await Api.getChatMessages(
+      chatId,
+      10,
+      0,
+      true,
+    );
     setPinnedMessages(fetchedPinnedMessages);
   };
 
@@ -316,8 +319,8 @@ const Community = () => {
       fetchedMembers.some(
         (member) =>
           member.user_id === localStorage.getItem("user_id") &&
-          member.role === "admin"
-      )
+          member.role === "admin",
+      ),
     );
   };
 
@@ -341,7 +344,7 @@ const Community = () => {
       setPinnedMessages((prevPinned) => [data.message, ...prevPinned]);
     } else if (data.type === "unpin_message") {
       setPinnedMessages((prevPinned) =>
-        prevPinned.filter((msg) => msg.message_id !== data.message_id)
+        prevPinned.filter((msg) => msg.message_id !== data.message_id),
       );
     }
   };
@@ -388,7 +391,9 @@ const Community = () => {
   };
 
   if (loading) {
-    return <div className="text-white text-center mt-8">Loading community...</div>;
+    return (
+      <div className="text-white text-center mt-8">Loading community...</div>
+    );
   }
 
   if (error) {
