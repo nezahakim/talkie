@@ -383,7 +383,7 @@ class Api {
     let ws;
 
     function connect() {
-      const url = `${WS_BASE_URL}/ws/chats/${chatId}?token=${token}`;
+      const url = `${WS_BASE_URL}/chats/${chatId}?token=${token}`;
       console.log(`Attempting to connect to WebSocket: ${url}`);
 
       ws = new WebSocket(url);
