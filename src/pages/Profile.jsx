@@ -8,10 +8,11 @@ import {
   FaGlobe,
   FaLock,
 } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Api from "../services/Api";
 
 export default function Profile({ onLogout }) {
+  const navigate = useNavigate();
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
@@ -28,6 +29,10 @@ export default function Profile({ onLogout }) {
     };
     getData();
   }, []);
+
+  const handleChat = async () => {
+    navigate("/p/c/" + user.user_id);
+  };
 
   if (!user) {
     return (
@@ -107,12 +112,8 @@ export default function Profile({ onLogout }) {
 
         {/* Profile Info */}
         <div className="relative bg-white px-4 py-5 sm:px-6">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-5">
-            {/* <img
-              src={user.profile_picture}
-              alt={user.full_name}
-              className="h-24 w-24 rounded-full border-4 border-white absolute -top-12 left-4"
-            /> */}
+          {/* <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-5">
+           
             <span className="h-24 w-24 text-xl rounded-full border-4 border-white absolute -top-12 left-4">
               🌸
             </span>
@@ -122,7 +123,25 @@ export default function Profile({ onLogout }) {
               </h1>
               <p className="text-sm text-gray-500 mb-2">@{user.username}</p>
             </div>
+          </div> */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-5 relative">
+            {/* <img
+              src={user.profile_picture}
+              alt={user.full_name}
+              className="h-24 w-24 rounded-full border-4 border-white absolute -top-12 left-4"
+            /> */}
+            {/* Profile emoji */}
+            <span className="h-24 w-24 text-4xl rounded-full border-4 border-white bg-gray-100 flex items-center justify-center absolute -top-12 left-4 shadow-lg">
+              🌸
+            </span>
+            <div className="mt-12 pt-1 sm:pt-1 ml-32 sm:ml-0">
+              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+                {user.full_name}
+              </h1>
+              <p className="text-sm text-gray-500 mb-2">@{user.username}</p>
+            </div>
           </div>
+
           <div className="mt-4 flex flex-wrap gap-4">
             {username ? (
               ""
@@ -133,7 +152,11 @@ export default function Profile({ onLogout }) {
                 primary
               />
             )}
-            <ActionButton icon={<FaEnvelope />} text="Chat" />
+            <ActionButton
+              icon={<FaEnvelope />}
+              onClick={handleChat}
+              text="Chat"
+            />
             <ActionButton icon={<FaBell />} text="Notify" />
           </div>
           <div className="mt-4 flex space-x-6 text-sm text-gray-500">

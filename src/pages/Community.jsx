@@ -15,6 +15,8 @@ const Community = () => {
   const [showMembers, setShowMembers] = useState(false);
   const chatRef = useRef(null);
 
+  const currentUserId = localStorage.getItem("userId");
+
   const fetchCommunityData = async () => {
     const [communityInfo, messages, members] = await Promise.all([
       Api.getCommunityInfo(chatId),
@@ -57,6 +59,14 @@ const Community = () => {
     try {
       await Api.leaveCommunityChat(chatId);
       navigate("/communities");
+    } catch (error) {
+      console.error("Error leaving chat:", error);
+    }
+  };
+  const handleJoinCommunity = async () => {
+    try {
+      await Api.joinCommunityChat(chatId);
+      // navigate("/communities/" + chatId);
     } catch (error) {
       console.error("Error leaving chat:", error);
     }
@@ -185,7 +195,16 @@ const Community = () => {
             </div>
           </div>
           <div className="flex-shrink-0 w-full border-t border-gray-700">
-            <ChatSendText onSendMessage={handleSendMessage} />
+            {members.user_id == currentUserId ? (
+              <ChatSendText onSendMessage={handleSendMessage} />
+            ) : (
+              <button
+                className="text-gray-400 hover:text-white transition duration-300"
+                onClick={handleJoinCommunity}
+              >
+                Join Community
+              </button>
+            )}
           </div>
         </div>
         {showMembers && (
