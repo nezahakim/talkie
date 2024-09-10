@@ -1,34 +1,43 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaUsers } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import Api from '../../services/Api';
+import Api from "../../services/Api";
 
 const Communities = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [communities, setCommunities] = useState([]);
 
-  useEffect(()={
-      const FetchAll = async () => {
-          const responce = await Api.getCommunities();
-          const comms = responce.data;
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const response = await Api.getCommunities();
+        const comms = response.data;
 
-          comms.map((community)=> {
-            const members = await Api.getCommunityMembers(community.community_id);
-            setCommunities(...communities, {
-              ...community,
-              members.length,
-            })
-          })
-        
-      };
-      FetchAll()
-  },[])
+        // Fetch all members concurrently
+        const membersPromises = comms.map(async (community) => {
+          const membersResponse = await Api.getCommunityMembers(
+            community.community_id,
+          );
+          return { ...community, membersCount: membersResponse.data.length };
+        });
+
+        // Wait for all member fetches to complete
+        const communitiesWithMembers = await Promise.all(membersPromises);
+
+        setCommunities(communitiesWithMembers);
+      } catch (error) {
+        console.error("Error fetching communities or members:", error);
+      }
+    };
+
+    fetchAll();
+  }, []);
 
   const handleClick = (community_id) => {
-      navigate("/community/"+ community_id)
-  }
-  
+    navigate("/community/" + community_id);
+  };
+
   // const communities = [
   //   { name: "Tech Enthusiasts", members: 5200, image: "vite.svg" },
   //   { name: "Fitness Fanatics", members: 3800, image: "vite.svg" },
@@ -49,7 +58,7 @@ const Communities = () => {
             className="flex items-center space-x-4 bg-gray-50 p-3 rounded-lg cursor-pointer"
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 300 }}
-            onClick={()=>handleClick(community.community_id)}
+            onClick={() => handleClick(community.community_id)}
           >
             <img
               src={community?.image}
@@ -59,7 +68,7 @@ const Communities = () => {
             <div>
               <h3 className="font-medium text-gray-800">{community.name}</h3>
               <p className="text-sm text-gray-500">
-                {community.members} members
+                {community.membersCount} members
               </p>
             </div>
           </motion.div>
