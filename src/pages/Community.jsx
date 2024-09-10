@@ -15,7 +15,7 @@ const Community = () => {
   const [showMembers, setShowMembers] = useState(false);
   const chatRef = useRef(null);
 
-  const currentUserId = localStorage.getItem("userId");
+  const currentUserId = localStorage.getItem("user_id");
 
   const fetchCommunityData = async () => {
     const [communityInfo, messages, members] = await Promise.all([
@@ -26,8 +26,7 @@ const Community = () => {
 
     const isAdmin = members.some(
       (member) =>
-        (member.user_id === localStorage.getItem("user_id") &&
-          member.role === "admin") ||
+        (member.user_id === currentUserId && member.role === "admin") ||
         "creator",
     );
 
@@ -116,14 +115,14 @@ const Community = () => {
   //   );
   // }
 
-  // if (error) {
-  //   return <div className="text-red-500 text-center mt-8">{error}</div>;
-  // }
+  if (error) {
+    console.log(error);
+  }
 
   const { communityInfo, messages, members, isAdmin } = communityData || {};
   const canChat =
-    members &&
-    communityData.members.some((member) => member.user_id === currentUserId);
+    members && members.some((member) => member.user_id === currentUserId);
+  console.log(canChat, currentUserId);
 
   return (
     <div className="fixed inset-0 flex flex-col bg-gray-900 overflow-hidden z-50">
@@ -196,7 +195,7 @@ const Community = () => {
               <ChatSendText onSendMessage={handleSendMessage} />
             ) : (
               <button
-                className="text-gray-400 hover:text-white transition duration-300"
+                className="flex items-center space-x-4 p-3 rounded-lg cursor-pointer text-gray-400 hover:text-white transition duration-300 mt-1"
                 onClick={handleJoinCommunity}
               >
                 Join Community

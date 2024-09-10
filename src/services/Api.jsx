@@ -42,8 +42,7 @@ class Api {
     const response = await this.axios.post("/auth/register", userData);
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", response.data.user);
-      localStorage.setItem("user_id", response.data.user.user_id);
+      localStorage.setItem("user_id", response.data.user.id);
     }
     return response.data;
   }
@@ -52,8 +51,7 @@ class Api {
     const response = await this.axios.post("/auth/login", credentials);
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", response.data.user);
-      localStorage.setItem("user_id", response.data.user.user_id);
+      localStorage.setItem("user_id", response.data.user.id);
     }
     return response.data;
   }
@@ -69,7 +67,7 @@ class Api {
     try {
       const response = await this.axios.get(endpoint, {
         params: {
-          userId: localStorage.getItem("user"),
+          userId: localStorage.getItem("user_id"),
         },
       });
 
@@ -249,9 +247,7 @@ class Api {
   }
 
   async joinCommunityChat(communityId) {
-    const response = await this.axios.post(
-      `/chats/community/${communityId}/join`,
-    );
+    const response = await this.axios.post(`/communities/${communityId}/join`);
     return response.data;
   }
 

@@ -12,21 +12,7 @@ const Communities = () => {
     const fetchAll = async () => {
       try {
         const response = await Api.getAllCommunities();
-
-        // Fetch all members concurrently
-        // const membersPromises = response.map(async (community) => {
-        //   const membersResponse = await Api.getCommunityMembers(
-        //     community.community_id,
-        //   );
-        //   return { ...community, membersCount: membersResponse.data.length };
-        // });
-
-        // console.log(membersPromises);
-
-        // // Wait for all member fetches to complete
-        // const communitiesWithMembers = await Promise.all(membersPromises);
-
-        setCommunities([response]);
+        setCommunities(response);
       } catch (error) {
         console.error("Error fetching communities or members:", error);
       }
@@ -39,12 +25,23 @@ const Communities = () => {
     navigate("/community/" + community_id);
   };
 
-  // const communities = [
-  //   { name: "Tech Enthusiasts", members: 5200, image: "vite.svg" },
-  //   { name: "Fitness Fanatics", members: 3800, image: "vite.svg" },
-  //   { name: "Book Lovers", members: 4500, image: "vite.svg" },
-  //   { name: "Foodies Unite", members: 6100, image: "vite.svg" },
-  // ];
+  const getRandomEmoji = () => {
+    const emojis = [
+      "😀",
+      "😍",
+      "🚀",
+      "🎉",
+      "🦄",
+      "🍕",
+      "🎸",
+      "🏆",
+      "💡",
+      "🌸",
+      "🎙️",
+      "✈️",
+    ];
+    return emojis[Math.floor(Math.random() * emojis.length)];
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -53,23 +50,26 @@ const Communities = () => {
         Popular Communities
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {communities.map((community, index) => (
+        {communities.map((community) => (
           <motion.div
-            key={index}
+            key={community.community_id}
             className="flex items-center space-x-4 bg-gray-50 p-3 rounded-lg cursor-pointer"
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 300 }}
             onClick={() => handleClick(community.community_id)}
           >
-            <img
-              src={community?.image}
+            {/* <img
+              src={community.image || "/default-community-image.png"}
               alt={community.name}
               className="w-12 h-12 rounded-full object-cover"
-            />
+            /> */}
+            <span className="h-12 w-12 text-4xl rounded-full border-4 border-white bg-gray-100 flex items-center justify-center left-0 shadow-lg object-cover">
+              {getRandomEmoji}
+            </span>
             <div>
               <h3 className="font-medium text-gray-800">{community.name}</h3>
               <p className="text-sm text-gray-500">
-                {community?.membersCount} members
+                {community.member_count} members
               </p>
             </div>
           </motion.div>
