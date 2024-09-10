@@ -30,6 +30,8 @@ export default function Profile({ onLogout }) {
     getData();
   }, []);
 
+  const currentUserId = localStorage.getItem("user_id");
+
   const handleChat = async () => {
     navigate("/p/c/" + user.user_id);
   };
@@ -131,7 +133,7 @@ export default function Profile({ onLogout }) {
               className="h-24 w-24 rounded-full border-4 border-white absolute -top-12 left-4"
             /> */}
             {/* Profile emoji */}
-            <span className="h-24 w-24 text-4xl rounded-full border-4 border-white bg-gray-100 flex items-center justify-center absolute -top-12 left-4 shadow-lg">
+            <span className="h-24 w-24 text-4xl rounded-full border-4 border-white bg-gray-100 flex items-center justify-center absolute -top-12 left-2 shadow-lg">
               🌸
             </span>
             <div className="mt-12 pt-1 sm:pt-1">
@@ -143,21 +145,22 @@ export default function Profile({ onLogout }) {
           </div>
 
           <div className="mt-4 flex flex-wrap gap-4">
-            {username ? (
-              ""
-            ) : (
+            {currentUserId === user.user_id ? (
               <ActionButton
                 icon={<FaUserCircle />}
                 text="Edit Profile"
                 primary
               />
+            ) : (
+              <>
+                <ActionButton
+                  icon={<FaEnvelope />}
+                  onClick={handleChat}
+                  text="Chat"
+                />
+                <ActionButton icon={<FaBell />} text="Notify" />
+              </>
             )}
-            <ActionButton
-              icon={<FaEnvelope />}
-              onClick={handleChat}
-              text="Chat"
-            />
-            <ActionButton icon={<FaBell />} text="Notify" />
           </div>
           <div className="mt-4 flex space-x-6 text-sm text-gray-500">
             <span>
