@@ -25,13 +25,6 @@ const Communities = () => {
       FetchAll()
   },[])
 
-  const chatId = communities.map((community) => community.id);
-
-  const [communityInfo, members] = await Promise.all([
-    Api.getCommunityInfo(chatId),
-    Api.getCommunityMembers(chatId),
-  ]);
-
   const handleClick = (community_id) => {
       navigate("/community/"+ community_id)
   }
