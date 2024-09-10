@@ -81,7 +81,7 @@
 
 // export default App;
 
-import React, { useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -102,18 +102,19 @@ import { AuthContext } from "./contexts/AuthContext";
 
 function App() {
   const { isAuthenticated, login, logout } = useContext(AuthContext);
-  const [activeTab, setActiveTab] = useState("live");
   const { maximize, minimize, isMinimized } = useMinimizeMaximize();
+  const [activeTab, setActiveTab] = useState("live");
 
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-gray-100">
         <main className="flex-grow container mx-auto">
-          {isAuthenticated ? (
-            <>
-              <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-              <Routes>
-                <Route path="/" element={<Live />} />
+          {isAuthenticated && (
+            <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+          )}
+          <Routes>
+            {isAuthenticated ? (
+              <>
                 <Route
                   path="/profile/:username"
                   element={<Profile onLogout={logout} />}
@@ -125,29 +126,30 @@ function App() {
                 />
                 <Route path="/explore" element={<Explore />} />
                 <Route path="/live" element={<Live />} />
-                {/* Redirect to home if unknown route */}
+                <Route path="/" element={<Live />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-              <LiveButton onClick={maximize} />
-              {isMinimized && <LiveStreamLayout minimize={minimize} />}
-            </>
-          ) : (
-            <>
-              <Routes>
+              </>
+            ) : (
+              <>
                 <Route
                   path="/register"
                   element={<Registration onLogin={login} />}
                 />
                 <Route path="/login" element={<Login onLogin={login} />} />
-                {/* Redirect to login for any unknown route */}
                 <Route path="*" element={<Navigate to="/login" replace />} />
-              </Routes>
+              </>
+            )}
+          </Routes>
+          {isAuthenticated && (
+            <>
+              <LiveButton onClick={maximize} />
+              {isMinimized && <LiveStreamLayout minimize={minimize} />}
             </>
           )}
-          <div className="md:hidden bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center py-4 z-50 flex flex-col items-center p-2 text-xs mt-1">
-            From Notifycode Inc.
-          </div>
         </main>
+        <footer className="md:hidden bg-white border-t border-gray-200 py-4 text-center text-xs">
+          From Notifycode Inc.
+        </footer>
       </div>
     </Router>
   );
