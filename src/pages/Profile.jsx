@@ -134,7 +134,7 @@ export default function Profile({ onLogout }) {
             <span className="h-24 w-24 text-4xl rounded-full border-4 border-white bg-gray-100 flex items-center justify-center absolute -top-12 left-4 shadow-lg">
               🌸
             </span>
-            <div className="mt-12 pt-1 sm:pt-1 ml-32 sm:ml-0">
+            <div className="mt-12 pt-1 sm:pt-1">
               <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
                 {user.full_name}
               </h1>
