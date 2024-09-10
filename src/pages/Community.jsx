@@ -195,7 +195,7 @@ const Community = () => {
             </div>
           </div>
           <div className="flex-shrink-0 w-full border-t border-gray-700">
-            {members.user_id == currentUserId ? (
+            {member.user_id == currentUserId ? (
               <ChatSendText onSendMessage={handleSendMessage} />
             ) : (
               <button
