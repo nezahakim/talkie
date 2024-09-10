@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import Api from "../services/Api";
+import { format } from "date-fns";
 
 export default function Profile({ onLogout }) {
   const navigate = useNavigate();
@@ -163,7 +164,7 @@ export default function Profile({ onLogout }) {
             </span>
             <span>
               <FaCalendarAlt className="inline mr-1" />
-              Joined {user.created_at}
+              Joined {format(new Date(user.created_at), "MMM d, yyyy")}
             </span>
           </div>
         </div>

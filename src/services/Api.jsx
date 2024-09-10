@@ -43,6 +43,7 @@ class Api {
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", response.data.user);
+      localStorage.setItem("user_id", response.data.user.user_id);
     }
     return response.data;
   }
@@ -52,6 +53,7 @@ class Api {
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", response.data.user);
+      localStorage.setItem("user_id", response.data.user.user_id);
     }
     return response.data;
   }
