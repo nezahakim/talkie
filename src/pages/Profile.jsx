@@ -108,11 +108,14 @@ export default function Profile({ onLogout }) {
         {/* Profile Info */}
         <div className="relative bg-white px-4 py-5 sm:px-6">
           <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-5">
-            <img
+            {/* <img
               src={user.profile_picture}
               alt={user.full_name}
               className="h-24 w-24 rounded-full border-4 border-white absolute -top-12 left-4"
-            />
+            /> */}
+            <span className="h-24 w-24 rounded-full border-4 border-white absolute -top-12 left-4">
+              🌸
+            </span>
             <div className="mt-12 pt-1 sm:pt-1">
               <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
                 {user.full_name}
