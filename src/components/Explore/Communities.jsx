@@ -11,21 +11,22 @@ const Communities = () => {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const response = await Api.getCommunities();
-        const comms = response.data;
+        const response = await Api.getAllCommunities();
 
         // Fetch all members concurrently
-        const membersPromises = comms.map(async (community) => {
-          const membersResponse = await Api.getCommunityMembers(
-            community.community_id,
-          );
-          return { ...community, membersCount: membersResponse.data.length };
-        });
+        // const membersPromises = response.map(async (community) => {
+        //   const membersResponse = await Api.getCommunityMembers(
+        //     community.community_id,
+        //   );
+        //   return { ...community, membersCount: membersResponse.data.length };
+        // });
 
-        // Wait for all member fetches to complete
-        const communitiesWithMembers = await Promise.all(membersPromises);
+        // console.log(membersPromises);
 
-        setCommunities(communitiesWithMembers);
+        // // Wait for all member fetches to complete
+        // const communitiesWithMembers = await Promise.all(membersPromises);
+
+        setCommunities([response]);
       } catch (error) {
         console.error("Error fetching communities or members:", error);
       }
@@ -68,7 +69,7 @@ const Communities = () => {
             <div>
               <h3 className="font-medium text-gray-800">{community.name}</h3>
               <p className="text-sm text-gray-500">
-                {community.membersCount} members
+                {community?.membersCount} members
               </p>
             </div>
           </motion.div>

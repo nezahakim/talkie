@@ -121,15 +121,12 @@ const Community = () => {
   // }
 
   const { communityInfo, messages, members, isAdmin } = communityData || {};
+  const canChat =
+    members &&
+    communityData.members.some((member) => member.user_id === currentUserId);
 
   return (
     <div className="fixed inset-0 flex flex-col bg-gray-900 overflow-hidden z-50">
-      {/* <Header
-        communityInfo={communityInfo}
-        membersCount={members?.length}
-        onLeave={handleLeaveChat}
-        onToggleMembers={() => setShowMembers(!showMembers)}
-      /> */}
       <Header
         communityInfo={communityInfo}
         members={members}
@@ -195,7 +192,7 @@ const Community = () => {
             </div>
           </div>
           <div className="flex-shrink-0 w-full border-t border-gray-700">
-            {member.user_id == currentUserId ? (
+            {canChat ? (
               <ChatSendText onSendMessage={handleSendMessage} />
             ) : (
               <button
