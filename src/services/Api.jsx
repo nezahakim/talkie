@@ -219,6 +219,11 @@ class Api {
     return response.data;
   }
 
+  async getCommunities(chatId) {
+    const response = await this.axios.get("/communities");
+    return response.data;
+  }
+
   async getCommunityMembers(communityId) {
     const response = await this.axios.get(
       `/communities/${communityId}/members`,
