@@ -2,25 +2,40 @@ import React, { useState, useRef, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaThumbtack } from "react-icons/fa";
 import Api from "../services/Api";
+import { useChatController } from "../hooks/useChatController";
 import Header from "../components/community/Header";
 import ChatSendText from "../components/community/ChatSendText";
 import MembersList from "../components/community/MembersList";
 import useRealTimeUpdates from "../hooks/useRealTimeUpdates";
 import CommunityWelcomeMessage from "../components/community/CommunityWelcomeMessage";
+import JoinCommunity from "../components/community/JoinCommunity";
 import { format } from "date-fns";
 
 const Community = () => {
-  const { chatId } = useParams();
   const navigate = useNavigate();
+  const { chatId } = useParams();
+  const token = localStorage.getItem("token");
+  const currentUserId = localStorage.getItem("user_id");
+
   const [showMembers, setShowMembers] = useState(false);
   const chatRef = useRef(null);
 
-  const currentUserId = localStorage.getItem("user_id");
+  const {
+    messages,
+    ListAllChats,
+    sendMessage,
+    deleteMessage,
+    pinMessage,
+    unpinMessage,
+  } = useChatController(chatId, currentUserId, token);
+
+  if (messages.length < 1) {
+    ListAllChats();
+  }
 
   const fetchCommunityData = async () => {
-    const [communityInfo, messages, members] = await Promise.all([
+    const [communityInfo, members] = await Promise.all([
       Api.getCommunityInfo(chatId),
-      Api.getChatMessages(chatId),
       Api.getCommunityMembers(chatId),
     ]);
 
@@ -32,7 +47,6 @@ const Community = () => {
 
     return {
       communityInfo,
-      messages: messages.reverse(),
       members,
       isAdmin,
     };
@@ -40,19 +54,22 @@ const Community = () => {
 
   const {
     data: communityData,
-    loading,
     error,
     refetch,
-  } = useRealTimeUpdates(fetchCommunityData, 5000, [chatId]);
+  } = useRealTimeUpdates(fetchCommunityData, 2000, [chatId]);
 
-  const handleSendMessage = async (message) => {
-    try {
-      await Api.sendMessage(chatId, message);
-      refetch();
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
+  const handleSendMessage = (message) => {
+    sendMessage(message);
   };
+
+  // const handleSendMessage = async (message) => {
+  //   //   try {
+  //   //     await Api.sendMessage(chatId, message);
+  //   //     refetch();
+  //   //   } catch (error) {
+  //   //     console.error("Error sending message:", error);
+  //   //   }
+  //   // };
 
   const handleLeaveChat = async () => {
     try {
@@ -62,12 +79,13 @@ const Community = () => {
       console.error("Error leaving chat:", error);
     }
   };
+
   const handleJoinCommunity = async () => {
     try {
       await Api.joinCommunityChat(chatId);
-      // navigate("/communities/" + chatId);
+      refetch();
     } catch (error) {
-      console.error("Error leaving chat:", error);
+      console.error("Error joining chat:", error);
     }
   };
 
@@ -109,108 +127,113 @@ const Community = () => {
     return emojis[Math.floor(Math.random() * emojis.length)];
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="text-white text-center mt-8">Loading community...</div>
-  //   );
-  // }
-
   if (error) {
     console.log(error);
   }
 
-  const { communityInfo, messages, members, isAdmin } = communityData || {};
+  const { communityInfo, members, isAdmin } = communityData || {};
+
   const canChat =
     members && members.some((member) => member.user_id === currentUserId);
-  console.log(canChat, currentUserId);
 
   return (
     <div className="fixed inset-0 flex flex-col bg-gray-900 overflow-hidden z-50">
-      <Header
-        communityInfo={communityInfo}
-        members={members}
-        currentUserId={localStorage.getItem("user_id")} // You'll need to provide this
-        onLeave={handleLeaveChat}
-        onToggleMembers={() => setShowMembers(!showMembers)}
-      />
-      <div className="flex-1 flex overflow-hidden mt-16 relative z-9">
-        <div className="flex-1 flex flex-col bg-opacity-70 w-full">
-          <div className="flex-1 flex overflow-hidden">
-            <div className="flex-grow flex flex-col overflow-hidden w-full">
-              <div
-                className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300 py-4 w-full"
-                ref={chatRef}
-              >
-                {communityInfo && (
-                  <CommunityWelcomeMessage
-                    communityInfo={communityInfo}
-                    membersCount={members?.length || 0}
-                  />
-                )}
-                <div className="bg-gray-800 p-4 rounded-lg w-full">
-                  {messages?.map((message) => (
-                    <div
-                      key={message.message_id}
-                      className="flex items-start space-x-3 mb-2 w-full"
-                    >
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
-                        {getRandomEmoji()}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2">
-                          <FaThumbtack className="text-yellow-500 text-xs" />
-                          <span
-                            className="text-xs font-semibold"
-                            style={{ color: userColors[message.user_id] }}
-                          >
-                            {message.username}
-                          </span>
-                        </div>
-                        <p className="text-white mt-1">{message.message}</p>
-                        <span className="text-xs text-gray-400">
-                          {format(
-                            new Date(message.created_at),
-                            "MMM d, yyyy HH:mm",
-                          )}
-                        </span>
-                      </div>
-                      {isAdmin && (
-                        <button
-                          onClick={() => {
-                            /* Add pin functionality here */
-                          }}
-                          className="text-gray-400 hover:text-white transition duration-300"
+      {canChat ? (
+        <>
+          <Header
+            communityInfo={communityInfo}
+            members={members}
+            currentUserId={currentUserId}
+            onLeave={handleLeaveChat}
+            onToggleMembers={() => setShowMembers(!showMembers)}
+          />
+          <div className="flex-1 flex overflow-hidden mt-16 relative z-9">
+            <div className="flex-1 flex flex-col bg-opacity-70 w-full">
+              <div className="flex-1 flex overflow-hidden">
+                <div className="flex-grow flex flex-col overflow-hidden w-full">
+                  <div
+                    className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300 py-4 w-full"
+                    ref={chatRef}
+                  >
+                    {communityInfo && (
+                      <CommunityWelcomeMessage
+                        canChat={canChat}
+                        communityInfo={communityInfo}
+                        membersCount={members?.length || 0}
+                      />
+                    )}
+
+                    <div className="bg-gray-800 p-4 rounded-lg w-full">
+                      {messages.map((message) => (
+                        <div
+                          key={message.id}
+                          className="flex items-start space-x-3 mb-2 w-full"
                         >
-                          Pin
-                        </button>
-                      )}
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+                            {getRandomEmoji()}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-2">
+                              <FaThumbtack className="text-yellow-500 text-xs" />
+                              <span
+                                className="text-xs font-semibold"
+                                style={{ color: userColors[message.user_id] }}
+                              >
+                                {message.user_id === currentUserId
+                                  ? "You"
+                                  : message.full_name}
+                              </span>
+                            </div>
+                            <p className="text-white mt-1">{message.message}</p>
+                            <span className="text-xs text-gray-400">
+                              {format(
+                                new Date(message.created_at),
+                                "MMM d, yyyy HH:mm",
+                              )}
+                            </span>
+                          </div>
+                          {isAdmin && (
+                            <div>
+                              <button
+                                onClick={() =>
+                                  message.pinned
+                                    ? unpinMessage(message.id)
+                                    : pinMessage(message.id)
+                                }
+                                className="text-gray-400 hover:text-white transition duration-300 mr-2"
+                              >
+                                {message.pinned ? "Unpin" : "Pin"}
+                              </button>
+                              <button
+                                onClick={() => deleteMessage(message.id)}
+                                className="text-gray-400 hover:text-white transition duration-300"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
+              <div className="flex-shrink-0 w-full border-t border-gray-700">
+                <ChatSendText onSendMessage={handleSendMessage} />
+              </div>
             </div>
-          </div>
-          <div className="flex-shrink-0 w-full border-t border-gray-700">
-            {canChat ? (
-              <ChatSendText onSendMessage={handleSendMessage} />
-            ) : (
-              <button
-                className="flex items-center space-x-4 p-3 rounded-lg cursor-pointer text-gray-400 hover:text-white transition duration-300 mt-1"
-                onClick={handleJoinCommunity}
-              >
-                Join Community
-              </button>
+            {showMembers && (
+              <MembersList
+                members={members}
+                isAdmin={isAdmin}
+                onClose={() => setShowMembers(false)}
+              />
             )}
           </div>
-        </div>
-        {showMembers && (
-          <MembersList
-            members={members}
-            isAdmin={isAdmin}
-            onClose={() => setShowMembers(false)}
-          />
-        )}
-      </div>
+        </>
+      ) : (
+        <JoinCommunity Join={handleJoinCommunity} />
+      )}
     </div>
   );
 };

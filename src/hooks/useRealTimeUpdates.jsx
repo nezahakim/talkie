@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 const useRealTimeUpdates = (
   fetchFunction,
-  interval = 2000,
+  interval = 300,
   dependencies = [],
 ) => {
   const [data, setData] = useState(null);

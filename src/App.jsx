@@ -13,6 +13,7 @@ import LiveStreamLayout from "./pages/LiveRoom";
 import LiveButton from "./components/LiveButton";
 import useMinimizeMaximize from "./hooks/useMinimizeMaximize";
 import Community from "./pages/Community";
+import PrivateChat from "./pages/PrivateChat";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import { AuthContext } from "./contexts/AuthContext";
@@ -48,7 +49,8 @@ function App() {
                   path="/profile/:username"
                   element={<Profile onLogout={logout} />}
                 />
-                <Route path="/community/:chatId" element={<Community />} />
+                <Route path="/c/c/:chatId" element={<Community />} />
+                <Route path="/p/c/:chatId" element={<PrivateChat />} />
                 <Route
                   path="/profile"
                   element={<Profile onLogout={logout} />}

@@ -7,9 +7,9 @@ const ChatCard = ({ chat }) => {
 
   const handleClick = () => {
     if (chat.chat_type === "community") {
-      navigate("/community/" + chat.chat_id);
+      navigate("/c/c/" + chat.chat_id);
     } else {
-      navigate("/chat/" + chat.chat_id);
+      navigate("/c/p/" + chat.chat_id);
     }
   };
   if (chat.last_message === null) {

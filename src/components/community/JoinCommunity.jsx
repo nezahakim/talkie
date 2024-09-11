@@ -1,9 +1,16 @@
-import React from "react";
-import { FaUsers, FaStar, FaInfoCircle } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaUsers, FaStar, FaInfoCircle, FaMinusCircle } from "react-icons/fa";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
+import Api from "../../services/Api";
+import { useNavigate } from "react-router-dom";
 
-const PcStartChat = ({ canChat, communityInfo, membersCount }) => {
+const JoinCommunity = ({ Join }) => {
+  const navigate = useNavigate();
+  const onClose = () => {
+    navigate("/live");
+  };
+
   const getRandomEmoji = () => {
     const emojis = [
       "🚀",
@@ -12,6 +19,7 @@ const PcStartChat = ({ canChat, communityInfo, membersCount }) => {
       "🎊",
       "🔥",
       "💡",
+      "🌈",
       "🦄",
       "🍕",
       "🎸",
@@ -54,48 +62,27 @@ const PcStartChat = ({ canChat, communityInfo, membersCount }) => {
         className="text-3xl font-bold text-white text-center mb-4"
         variants={itemVariants}
       >
-        Welcome to {communityInfo.name}!
+        Welcome!
       </motion.h2>
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-4 text-white"
-        variants={itemVariants}
-      >
-        <div className="flex items-center justify-center">
-          <FaUsers className="mr-2" />
-          <span>{membersCount} members</span>
-        </div>
-        <div className="flex items-center justify-center">
-          <FaStar className="mr-2" />
-          <span>Level {communityInfo.level || 1}</span>
-        </div>
-        <div className="flex items-center justify-center">
-          <FaInfoCircle className="mr-2" />
-          <span>
-            Created on{" "}
-            {format(new Date(communityInfo.created_at), "MMM d, yyyy")}
-          </span>
-        </div>
-      </motion.div>
       <motion.p
         className="text-gray-200 mt-4 text-center"
         variants={itemVariants}
       >
-        {communityInfo.description}
+        Join This Community To Start Discussing Your Ideas!
       </motion.p>
-      {canChat ? (
-        ""
-      ) : (
-        <motion.div
-          className="mt-6 flex justify-center"
-          variants={itemVariants}
+      <motion.div className="mt-6 flex justify-center" variants={itemVariants}>
+        <button
+          className="bg-white text-purple-600 font-semibold py-2 px-4 rounded-full hover:bg-gray-100 transition duration-300"
+          onClick={Join}
         >
-          <button className="bg-white text-purple-600 font-semibold py-2 px-4 rounded-full hover:bg-gray-100 transition duration-300">
-            Get Started
-          </button>
-        </motion.div>
-      )}
+          Get Started
+        </button>{" "}
+        <button className="text-gray-300 px-3 sm:px-4 sm:py-2 hover:text-white transition duration-300">
+          <FaMinusCircle size={20} onClick={onClose} />
+        </button>
+      </motion.div>
     </motion.div>
   );
 };
 
-export default PcStartChat;
+export default JoinCommunity;

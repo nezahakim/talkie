@@ -3,7 +3,7 @@ import { FaUsers, FaStar, FaInfoCircle } from "react-icons/fa";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 
-const CommunityWelcomeMessage = ({ communityInfo, membersCount }) => {
+const CommunityWelcomeMessage = ({ canChat, communityInfo, membersCount }) => {
   const getRandomEmoji = () => {
     const emojis = [
       "🚀",
@@ -12,7 +12,6 @@ const CommunityWelcomeMessage = ({ communityInfo, membersCount }) => {
       "🎊",
       "🔥",
       "💡",
-      "🌈",
       "🦄",
       "🍕",
       "🎸",
@@ -83,11 +82,18 @@ const CommunityWelcomeMessage = ({ communityInfo, membersCount }) => {
       >
         {communityInfo.description}
       </motion.p>
-      <motion.div className="mt-6 flex justify-center" variants={itemVariants}>
-        <button className="bg-white text-purple-600 font-semibold py-2 px-4 rounded-full hover:bg-gray-100 transition duration-300">
-          Get Started
-        </button>
-      </motion.div>
+      {canChat ? (
+        ""
+      ) : (
+        <motion.div
+          className="mt-6 flex justify-center"
+          variants={itemVariants}
+        >
+          <button className="bg-white text-purple-600 font-semibold py-2 px-4 rounded-full hover:bg-gray-100 transition duration-300">
+            Get Started
+          </button>
+        </motion.div>
+      )}
     </motion.div>
   );
 };

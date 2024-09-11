@@ -22,7 +22,7 @@ const Communities = () => {
   }, []);
 
   const handleClick = (community_id) => {
-    navigate("/community/" + community_id);
+    navigate("/c/c/" + community_id);
   };
 
   const getRandomEmoji = () => {
