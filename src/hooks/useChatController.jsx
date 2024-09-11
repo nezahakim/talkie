@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import io from "socket.io-client";
 
-// const SOCKET_SERVER_URL = "https://talkie-back.vercel.app";
-const SOCKET_SERVER_URL =
-  "https://0d3a37b3-590d-4da3-892e-347bbc5cb91e-00-1gsjkthjnxlbp.spock.replit.dev/";
+const SOCKET_SERVER_URL = "https://talkie-back.vercel.app";
+// const SOCKET_SERVER_URL =
+//   "https://0d3a37b3-590d-4da3-892e-347bbc5cb91e-00-1gsjkthjnxlbp.spock.replit.dev/";
 
 export const useChatController = (chatId, userId, token) => {
   const [messages, setMessages] = useState([]);
