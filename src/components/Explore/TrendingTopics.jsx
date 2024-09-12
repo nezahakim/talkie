@@ -12,7 +12,7 @@ const TrendingTopics = () => {
   ];
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div className="bg-white rounded-lg py-4 mb-8">
       <h2 className="text-2xl font-semibold mb-4 flex items-center">
         <FaFire className="text-orange-500 mr-2" />
         Trending Topics

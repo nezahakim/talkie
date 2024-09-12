@@ -1,18 +1,10 @@
-import React, { useState } from "react";
-import {
-    FaCompass,
-    FaUser,
-    FaSearch,
-    FaMicrophone,
-    FaEnvelope,
-    FaBell,
-} from "react-icons/fa";
+import React from "react";
+import { FaUser, FaSearch, FaMicrophone, FaBell } from "react-icons/fa";
 
 export default function Header({ activeTab, setActiveTab }) {
     const tabs = [
-        { id: "explore", icon: <FaCompass />, label: "Explore" },
         { id: "live", icon: <FaMicrophone />, label: "Live" },
-        { id: "profile", icon: <FaUser />, label: "Profile" },
+        { id: "p", icon: <FaUser />, label: "Profile" },
     ];
 
     return (
@@ -21,7 +13,7 @@ export default function Header({ activeTab, setActiveTab }) {
                 <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-4">
                         <h1 className="text-2xl sm:text-3xl font-bold text-indigo-600">
-                            Talkie
+                            Talkie+
                         </h1>
                         <div className="hidden md:flex space-x-4">
                             {tabs.map((tab) => (

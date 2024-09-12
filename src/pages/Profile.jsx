@@ -33,8 +33,15 @@ export default function Profile({ onLogout }) {
 
   const currentUserId = localStorage.getItem("user_id");
 
-  const handleChat = async () => {
+  const handleChat = () => {
     navigate("/p/c/" + user.user_id);
+  };
+
+  const handleNotify = () => {
+    console.log("NotifyOn");
+  };
+  const handleEditProfile = () => {
+    console.log("handleEditProfile");
   };
 
   if (!user) {
@@ -139,15 +146,20 @@ export default function Profile({ onLogout }) {
                 icon={<FaUserCircle />}
                 text="Edit Profile"
                 primary
+                action={handleEditProfile}
               />
             ) : (
               <>
                 <ActionButton
                   icon={<FaEnvelope />}
-                  onClick={handleChat}
                   text="Chat"
+                  action={handleChat}
                 />
-                <ActionButton icon={<FaBell />} text="Notify" />
+                <ActionButton
+                  icon={<FaBell />}
+                  text="Notify"
+                  action={handleNotify}
+                />
               </>
             )}
           </div>
@@ -242,8 +254,9 @@ const ExpertiseCard = ({ topics }) => (
   </div>
 );
 
-const ActionButton = ({ icon, text, primary = false }) => (
+const ActionButton = ({ icon, text, primary = false, action }) => (
   <button
+    onClick={action}
     className={`inline-flex justify-center items-center px-4 py-2 ${
       primary
         ? "bg-purple-600 text-white hover:bg-purple-700"

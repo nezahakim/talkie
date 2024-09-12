@@ -62,15 +62,6 @@ const Community = () => {
     sendMessage(message);
   };
 
-  // const handleSendMessage = async (message) => {
-  //   //   try {
-  //   //     await Api.sendMessage(chatId, message);
-  //   //     refetch();
-  //   //   } catch (error) {
-  //   //     console.error("Error sending message:", error);
-  //   //   }
-  //   // };
-
   const handleLeaveChat = async () => {
     try {
       await Api.leaveCommunityChat(chatId);
@@ -137,7 +128,7 @@ const Community = () => {
     members && members.some((member) => member.user_id === currentUserId);
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-gray-900 overflow-hidden z-50">
+    <div className="fixed inset-0 flex flex-col bg-gray-800 overflow-hidden z-50">
       {canChat ? (
         <>
           <Header
@@ -166,7 +157,7 @@ const Community = () => {
                     <div className="bg-gray-800 p-4 rounded-lg w-full">
                       {messages.map((message) => (
                         <div
-                          key={message.id}
+                          key={message.created_at}
                           className="flex items-start space-x-3 mb-2 w-full"
                         >
                           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">

@@ -83,6 +83,26 @@ class Api {
     }
   }
 
+  async getUserByUserId(user_id) {
+    try {
+      const response = await this.axios.get(`/users/user_id/` + user_id, {
+        params: {
+          userId: localStorage.getItem("user_id"),
+        },
+      });
+
+      if (response.data.message == "Token is not valid") {
+        localStorage.removeItem("token");
+        return <Navigate to="/login" replace />;
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      throw error;
+    }
+  }
+
   async updateUserProfile(userData) {
     const userId = localStorage.getItem("user_id");
     const response = await this.axios.put(`/users/profile`, userData);

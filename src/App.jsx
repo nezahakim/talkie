@@ -6,7 +6,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import Header from "./components/Header";
-import Explore from "./pages/Explore";
 import Live from "./pages/Live";
 import Profile from "./pages/Profile";
 import LiveStreamLayout from "./pages/LiveRoom";
@@ -46,23 +45,17 @@ function App() {
             {isAuthenticated ? (
               <>
                 <Route
-                  path="/profile/:username"
+                  path="/p/:username"
                   element={<Profile onLogout={logout} />}
                 />
                 <Route path="/c/c/:chatId" element={<Community />} />
                 <Route path="/p/c/:chatId" element={<PrivateChat />} />
-                <Route
-                  path="/profile"
-                  element={<Profile onLogout={logout} />}
-                />
-                <Route path="/explore" element={<Explore />} />
+                <Route path="/p" element={<Profile onLogout={logout} />} />
                 <Route path="/live" element={<Live />} />
                 <Route path="/" element={<Live />} />
               </>
             ) : (
               <>
-                {" "}
-                <Route path="/*" element={<Navigate to="/login" replace />} />
                 <Route
                   path="/register"
                   element={<Registration onLogin={login} />}

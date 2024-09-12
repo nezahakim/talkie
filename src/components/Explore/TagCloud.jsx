@@ -4,18 +4,21 @@ import { FaTags } from "react-icons/fa";
 
 const TagCloud = () => {
   const tags = [
-    "Technology",
-    "Travel",
-    "Food",
-    "Fashion",
-    "Sports",
-    "Music",
-    "Art",
-    "Science",
+    "#NezaAI",
+    "#AI",
+    "#Notifycast+",
+    "#Technology",
+    "#Travel",
+    "#Food",
+    "#Fashion",
+    "#Sports",
+    "#Music",
+    "#Art",
+    "#Science",
   ];
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white rounded-lg py-4">
       <h3 className="text-xl font-semibold mb-4 flex items-center">
         <FaTags className="text-blue-500 mr-2" />
         Popular Tags

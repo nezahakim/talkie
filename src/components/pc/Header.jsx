@@ -10,10 +10,6 @@ const Header = ({ userInfo }) => {
   return (
     <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-2 bg-opacity-80 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 border-b border-gray-600 shadow-lg z-10 h-20 sm:h-24 rounded-b-3xl">
       <div className="flex flex-col items-start">
-        {/* <div className="bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center px-3 py-1 rounded-full text-white text-14 font-bold shadow-md">
-          <FaMicrophone className="mr-1" size={14} />
-          {userInfo?.name || "Community Chat"}
-        </div> */}
         <div className="flex items-center mt-1 sm:mt-2">
           <div className="flex -space-x-2">
             {[1].map((i) => (
@@ -27,7 +23,7 @@ const Header = ({ userInfo }) => {
           </div>
           <div className="flex items-center justify-center bg-gray-700/60 px-3 py-1 rounded-full text-white text-xs font-bold shadow-md ml-2">
             <FaUsers className="mr-1" size={10} />
-            {userInfo.full_name}
+            {userInfo?.full_name}
           </div>
         </div>
       </div>

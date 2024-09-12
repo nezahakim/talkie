@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaPlus,
-  FaMicrophone,
-  FaUsers,
-  FaComments,
-  FaUserFriends,
-  FaSearch,
-} from "react-icons/fa";
+import { FaPlus, FaMicrophone, FaSearch } from "react-icons/fa";
 import CreateModal from "../components/CreateModal";
 import LiveRoomCard from "../components/LiveRoomCard";
 import ChatCard from "../components/ChatCard";
 import Api from "../services/Api";
+
+import TrendingTopics from "../components/Explore/TrendingTopics";
+import Communities from "../components/Explore/Communities";
+import LiveRooms from "../components/Explore/LiveRooms";
+import TagCloud from "../components/Explore/TagCloud";
 
 export default function Live() {
   const [activeSection, setActiveSection] = useState("chats");
@@ -74,7 +72,7 @@ export default function Live() {
   );
 
   const filteredAudioRooms = audioRooms.filter((room) =>
-    room.title.toLowerCase().includes(searchQuery.toLowerCase()),
+    room.session_title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -131,11 +129,23 @@ export default function Live() {
         </div>
       )}
       {activeSection === "talkieLive" && (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredAudioRooms.map((room) => (
-            <LiveRoomCard key={room.id} room={room} />
-          ))}
-        </div>
+        <>
+          <TrendingTopics />
+          <div className="py-4  mb-8">
+            <h2 className="text-2xl font-semibold mb-4 flex items-center">
+              <FaMicrophone className="text-red-500 mr-2" />
+              Quick Live Rooms
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredAudioRooms.map((room) => (
+                <LiveRoomCard key={room.session_id} room={room} />
+              ))}
+            </div>
+          </div>
+          <Communities />
+          <LiveRooms rooms={filteredAudioRooms} />
+          <TagCloud />
+        </>
       )}
       <CreateModal
         isOpen={isCreateModalOpen}
