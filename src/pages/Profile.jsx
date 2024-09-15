@@ -54,13 +54,6 @@ export default function Profile({ onLogout }) {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case "overview":
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <ExpertiseCard topics={user.hashtags} />
-          </div>
-        );
-
       case "communities":
         return (
           <div className="bg-white rounded-lg">
@@ -200,7 +193,7 @@ export default function Profile({ onLogout }) {
         {/* Tabs */}
         <div className="bg-white border-t border-gray-200">
           <nav className="flex">
-            {["overview", "communities"].map((tab) => (
+            {["communities"].map((tab) => (
               <button
                 key={tab}
                 className={`${

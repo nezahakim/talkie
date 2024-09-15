@@ -49,7 +49,7 @@ function App() {
                   element={<Profile onLogout={logout} />}
                 />
                 <Route path="/c/c/:chatId" element={<Community />} />
-                <Route path="/p/c/:chatId" element={<PrivateChat />} />
+                <Route path="/p/c/:userId" element={<PrivateChat />} />
                 <Route path="/p" element={<Profile onLogout={logout} />} />
                 <Route path="/live" element={<Live />} />
                 <Route path="/" element={<Live />} />
@@ -61,6 +61,7 @@ function App() {
                   element={<Registration onLogin={login} />}
                 />
                 <Route path="/login" element={<Login onLogin={login} />} />
+                <Route path="/*" element={<Navigate to="/login" replace />} />
               </>
             )}
             <Route path="/*" element={<Navigate to="/" replace />} />

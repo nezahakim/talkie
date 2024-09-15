@@ -101,28 +101,3 @@ export const useChatController = (chatId, userId, token) => {
     ListAllChats,
   };
 };
-
-//   return (
-//     <div className="chat-container">
-//       <div className="message-list">
-//         {messages.map((msg) => (
-//           <div key={msg.id} className="message">
-//             <p>{msg.content}</p>
-//             <button onClick={() => deleteMessage(msg.id)}>Delete</button>
-//             <button onClick={() => pinMessage(msg.id)}>Pin</button>
-//             <button onClick={() => unpinMessage(msg.id)}>Unpin</button>
-//           </div>
-//         ))}
-//       </div>
-//       <form onSubmit={handleSendMessage}>
-//         <input
-//           type="text"
-//           value={inputMessage}
-//           onChange={(e) => setInputMessage(e.target.value)}
-//           placeholder="Type a message..."
-//         />
-//         <button type="submit">Send</button>
-//       </form>
-//     </div>
-//   );
-// };

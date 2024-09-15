@@ -160,6 +160,7 @@ const Community = () => {
                           key={message.created_at}
                           className="flex items-start space-x-3 mb-2 w-full"
                         >
+                          {messages.chat_type}
                           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
                             {getRandomEmoji()}
                           </div>
